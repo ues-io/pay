@@ -1,0 +1,3 @@
+name: cc_input
+pack: main
+entrypoint: utilities/cc_input/cc_input

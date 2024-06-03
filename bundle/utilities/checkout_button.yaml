@@ -1,0 +1,3 @@
+name: checkout_button
+pack: main
+entrypoint: utilities/checkout_button/checkout_button

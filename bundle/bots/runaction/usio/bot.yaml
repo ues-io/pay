@@ -1,0 +1,4 @@
+name: usio
+public: true
+type: RUNACTION
+dialect: TYPESCRIPT

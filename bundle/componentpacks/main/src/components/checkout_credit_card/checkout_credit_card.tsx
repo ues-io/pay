@@ -1,13 +1,17 @@
-import { styles, definition, component } from "@uesio/ui"
-import { ChangeEvent, useState } from "react"
-import { usePaymentInputs } from "react-payment-inputs"
-import images, { type CardImages } from "react-payment-inputs/images"
+import { styles, definition, component, api } from "@uesio/ui"
+import { useState } from "react"
+
+import CCInput from "./utilities/cc_input/cc_input"
+import CheckoutButton from "./utilities/checkout_button/checkout_button"
 
 type ComponentDefinition = {
 	submitText: string
 }
 
-const typedImages = images as unknown as CardImages
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const signalAPI = api.signal as any
+
+const sampleMerchantKey = "AEAE82F9-5A34-47C3-A61E-1E8EE37BE3AD"
 
 const Component: definition.UC<ComponentDefinition> = (props) => {
 	const { context } = props
@@ -16,73 +20,31 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 	const TextField = component.getUtility("uesio/io.textfield")
 	const FieldWrapper = component.getUtility("uesio/io.fieldwrapper")
 	const FieldLabel = component.getUtility("uesio/io.fieldlabel")
-	const Button = component.getUtility("uesio/io.button")
 
 	const [firstName, setFirstName] = useState("")
 	const [lastName, setLastName] = useState("")
 	const [email, setEmail] = useState("")
-	const [number, setNumber] = useState("")
-	const [expiry, setExpiry] = useState("")
+	const [cardNumber, setCardNumber] = useState("")
+	const [expiryDate, setExpiryDate] = useState("")
 	const [cvc, setCVC] = useState("")
+	const [address, setAddress] = useState("")
+	const [city, setCity] = useState("")
+	const [state, setState] = useState("")
+	const [zip, setZip] = useState("")
 
-	const {
-		wrapperProps,
-		getCardImageProps,
-		getCardNumberProps,
-		getExpiryDateProps,
-		getCVCProps,
-	} = usePaymentInputs()
+	const [error, setError] = useState("")
+
 	const classes = styles.useStyleTokens(
 		{
 			wrapper: ["h-full", "grid", "justify-center", "items-center"],
 			root: ["max-w-[380px]", "m-8"],
-			nameWrapper: ["grid", "grid-cols-2", "gap-6"],
+			nameWrapper: ["grid", "grid-cols-2", "gap-4"],
+			locationWrapper: ["grid", "grid-cols-4", "gap-4"],
+			cityWrapper: ["col-span-2"],
 			buttonWrapper: ["mt-6"],
-			expiry: ["w-[4em]"],
-			number: ["w-[11em]"],
-			cvc: ["w-[2.5em]"],
-			focused: [
-				"outline",
-				"outline-2",
-				"outline-inherit",
-				"-outline-offset-2",
-				"outline-blue-700",
-			],
 		},
 		props
 	)
-
-	const inputClasses = styles.useUtilityStyleTokens(
-		{
-			input: [
-				"flex",
-				"items-center",
-				"gap-2",
-				"[&>input]:outline-none",
-				"[&>input::placeholder]:font-light",
-			],
-		},
-		props,
-		"uesio/io.field"
-	)
-
-	const { focused } = wrapperProps
-
-	const handleNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setNumber(e.target.value)
-	}
-
-	const handleExpiryChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setExpiry(e.target.value)
-	}
-
-	const handleCVCChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setCVC(e.target.value)
-	}
-
-	const onSubmit = () => {
-		console.log(firstName, lastName, email, number, expiry, cvc)
-	}
 
 	return (
 		<div className={classes.wrapper}>
@@ -101,44 +63,73 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 					<FieldLabel context={context} label="Email" />
 					<TextField setValue={setEmail} context={context} />
 				</FieldWrapper>
+				<CCInput
+					onNumberChange={setCardNumber}
+					onExpiryChange={setExpiryDate}
+					onCVCChange={setCVC}
+					context={context}
+					error={error}
+				/>
 				<FieldWrapper context={context}>
-					<FieldLabel context={context} label="Credit Card" />
-					<div
-						className={styles.cx(
-							inputClasses.input,
-							focused && classes.focused
-						)}
-					>
-						<svg
-							className={classes.card}
-							{...getCardImageProps({ images: typedImages })}
-						/>
-						<input
-							className={classes.number}
-							{...getCardNumberProps({
-								onChange: handleNumberChange,
-							})}
-						/>
-						<input
-							className={classes.expiry}
-							{...getExpiryDateProps({
-								onChange: handleExpiryChange,
-							})}
-						/>
-						<input
-							className={classes.cvc}
-							{...getCVCProps({
-								onChange: handleCVCChange,
-							})}
-						/>
-					</div>
+					<FieldLabel context={context} label="Address" />
+					<TextField setValue={setAddress} context={context} />
 				</FieldWrapper>
+				<div className={classes.locationWrapper}>
+					<FieldWrapper
+						context={context}
+						className={classes.cityWrapper}
+					>
+						<FieldLabel context={context} label="City" />
+						<TextField setValue={setCity} context={context} />
+					</FieldWrapper>
+					<FieldWrapper context={context}>
+						<FieldLabel context={context} label="State" />
+						<TextField setValue={setState} context={context} />
+					</FieldWrapper>
+					<FieldWrapper context={context}>
+						<FieldLabel context={context} label="Zip" />
+						<TextField setValue={setZip} context={context} />
+					</FieldWrapper>
+				</div>
 				<div className={classes.buttonWrapper}>
-					<Button
+					<CheckoutButton
+						request={{
+							merchantKey: sampleMerchantKey,
+							email,
+							cardNumber,
+							expiryDate,
+							cvc,
+						}}
 						context={context}
 						label={submitText}
-						variant="uesio/io.secondary"
-						onClick={onSubmit}
+						onSuccess={(result) => {
+							console.log(result)
+
+							signalAPI.runMany(
+								[
+									{
+										signal: "integration/RUN_ACTION",
+										integration: "usio/pay.usio",
+										action: "submit_token",
+										params: {
+											token: result.token,
+											amount: "100",
+											secondaryAmount: "3",
+											firstName,
+											lastName,
+											address,
+											city,
+											state,
+											zip,
+										},
+									},
+								],
+								context
+							)
+						}}
+						onError={(result) => {
+							setError(result.message)
+						}}
 					/>
 				</div>
 			</div>

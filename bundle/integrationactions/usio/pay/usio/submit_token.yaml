@@ -1,0 +1,30 @@
+name: submit_token
+label: Submit Token
+params:
+  - name: token
+    type: TEXT
+    required: true
+  - name: amount
+    type: TEXT
+    required: true
+  - name: secondaryAmount
+    type: TEXT
+    required: true
+  - name: firstName
+    type: TEXT
+    required: true
+  - name: lastName
+    type: TEXT
+    required: true
+  - name: address
+    type: TEXT
+    required: true
+  - name: city
+    type: TEXT
+    required: true
+  - name: state
+    type: TEXT
+    required: true
+  - name: zip
+    type: TEXT
+    required: true
