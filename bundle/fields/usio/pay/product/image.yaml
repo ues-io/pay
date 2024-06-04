@@ -1,0 +1,5 @@
+name: image
+label: Image
+type: FILE
+file:
+  accept: IMAGE
