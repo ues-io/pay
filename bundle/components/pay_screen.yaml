@@ -10,6 +10,9 @@ properties:
   - type: NUMBER
     name: secondaryAmount
     label: Secondary Amount
+  - type: TEXT
+    name: description
+    label: Description
 definition:
   - uesio/io.grid:
       uesio.styleTokens:
@@ -38,6 +41,7 @@ definition:
               - usio/pay.checkout_credit_card:
                   amount: $Prop{amount}
                   secondaryAmount: $Prop{secondaryAmount}
+                  description: $Prop{description}
 title: Payment Screen
 discoverable: true
 description: A payment screen layout

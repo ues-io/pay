@@ -17,6 +17,22 @@ type SubmitTokenResult = {
 	confirmation: string
 }
 
+const StyleDefaults = Object.freeze({
+	root: ["max-w-[390px]", "m-8"],
+	nameWrapper: ["grid", "grid-cols-2", "gap-4"],
+	locationWrapper: ["grid", "grid-cols-4", "gap-4"],
+	cityWrapper: ["col-span-2"],
+	buttonWrapper: ["mt-6", "flex", "gap-4", "items-start"],
+	amountWrapper: ["grid", "grid-cols-2", "gap-4"],
+	errorWrapper: ["grow", "text-xs", "text-rose-500", "py-1", "font-bold"],
+	errorTitle: ["font-light"],
+	successWrapper: ["grid", "justify-items-center"],
+	successText: ["text-slate-800", "font-light", "mb-2"],
+	successConfirmationText: ["text-slate-800", "text-sm", "font-light"],
+	successConfirmationNumber: ["text-emerald-800", "text-sm", "font-bold"],
+	successIcon: ["text-emerald-500", "text-8xl", "m-4"],
+})
+
 const defaultOnSubmitSignals = [
 	{
 		signal: "integration/RUN_ACTION",
@@ -38,12 +54,14 @@ const defaultOnSubmitSignals = [
 	},
 ]
 
-const defaultOnSuccessSignals = [
+const defaultOnSuccessSignals: signal.SignalDefinition[] = [
+	/*
 	{
 		signal: "notification/ADD",
 		text: "Payment success: $SignalOutput{[checkout][confirmation]}",
 		severity: "success",
 	},
+*/
 ]
 
 const numberToString = (num: string | number | undefined) => {
@@ -64,10 +82,13 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 	const NumberField = component.getUtility("uesio/io.numberfield")
 	const FieldWrapper = component.getUtility("uesio/io.fieldwrapper")
 	const FieldLabel = component.getUtility("uesio/io.fieldlabel")
+	const Icon = component.getUtility("uesio/io.icon")
 
 	const secondaryAmount = definition.secondaryAmount
 
 	const [amount, setAmount] = useState(definition.amount)
+
+	const [success, setSuccess] = useState("")
 
 	const [firstName, setFirstName] = useState("")
 	const [lastName, setLastName] = useState("")
@@ -82,25 +103,32 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 
 	const [error, setError] = useState("")
 
-	const classes = styles.useStyleTokens(
-		{
-			root: ["max-w-[390px]", "m-8"],
-			nameWrapper: ["grid", "grid-cols-2", "gap-4"],
-			locationWrapper: ["grid", "grid-cols-4", "gap-4"],
-			cityWrapper: ["col-span-2"],
-			buttonWrapper: ["mt-6", "flex", "gap-4", "items-start"],
-			amountWrapper: ["grid", "grid-cols-2", "gap-4"],
-			errorWrapper: [
-				"grow",
-				"text-xs",
-				"text-rose-500",
-				"py-1",
-				"font-bold",
-			],
-			errorTitle: ["font-light"],
-		},
-		props
-	)
+	const classes = styles.useStyleTokens(StyleDefaults, props)
+
+	if (success) {
+		return (
+			<div className={classes.root}>
+				<div className={classes.successWrapper}>
+					<Icon
+						context={context}
+						className={classes.successIcon}
+						icon="task_alt"
+					/>
+					<div className={classes.successText}>
+						Your payment was sumitted successfully.
+					</div>
+					<div>
+						<span className={classes.successConfirmationText}>
+							{"Confirmation: "}
+						</span>
+						<span className={classes.successConfirmationNumber}>
+							{success}
+						</span>
+					</div>
+				</div>
+			</div>
+		)
+	}
 
 	return (
 		<div className={classes.root}>
@@ -204,6 +232,7 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 									resultData
 								)
 							)
+							setSuccess(resultData.confirmation)
 						}
 					}}
 					onError={(result) => {
