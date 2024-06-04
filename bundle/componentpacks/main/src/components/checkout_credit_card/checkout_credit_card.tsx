@@ -8,6 +8,10 @@ type ComponentDefinition = {
 	submitText: string
 }
 
+type SubmitTokenResult = {
+	confirmation: string
+}
+
 const sampleMerchantKey = "AEAE82F9-5A34-47C3-A61E-1E8EE37BE3AD"
 const errorText = "There was a problem submitting your payment."
 
@@ -113,6 +117,7 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 								{
 									signal: "integration/RUN_ACTION",
 									integration: "usio/pay.usio",
+									stepId: "submit_token",
 									action: "submit_token",
 									params: {
 										token: result.token,
@@ -134,6 +139,14 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 									newContext.getCurrentErrors().join(", ")
 								)
 							} else {
+								const resultData =
+									newContext.getSignalOutputData(
+										"submit_token"
+									) as SubmitTokenResult
+								console.log(
+									"Confirmation",
+									resultData.confirmation
+								)
 								setError("")
 							}
 						}}

@@ -742,6 +742,11 @@ type Context = {
 	 */
 	getRoute: () => RouteState
 	/**
+	 * Returns signal output for a paricular label
+	 * @returns Data object
+	 */
+	getSignalOutputData: (label: string) => object
+	/**
 	 * Returns info about the current Site
 	 * @returns Wire object
 	 */
