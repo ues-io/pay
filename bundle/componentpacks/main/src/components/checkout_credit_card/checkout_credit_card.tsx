@@ -9,6 +9,7 @@ type ComponentDefinition = {
 }
 
 const sampleMerchantKey = "AEAE82F9-5A34-47C3-A61E-1E8EE37BE3AD"
+const errorText = "There was a problem submitting your payment."
 
 const Component: definition.UC<ComponentDefinition> = (props) => {
 	const { context } = props
@@ -127,8 +128,14 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 								},
 								context
 							)
-							console.log("Got Heeeeeeer")
-							setError("")
+
+							if (newContext.hasErrors()) {
+								setError(
+									newContext.getCurrentErrors().join(", ")
+								)
+							} else {
+								setError("")
+							}
 						}}
 						onError={(result) => {
 							setError(result.message)
@@ -137,7 +144,7 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 					{error && (
 						<div className={classes.errorWrapper}>
 							<div className={classes.errorTitle}>
-								There was a problem submitting your payment.
+								{errorText}
 							</div>
 							<div>{error}</div>
 						</div>

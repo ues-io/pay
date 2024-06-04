@@ -1,5 +1,18 @@
 import { RunActionBotApi } from "@uesio/bots"
 
+type SubmitTokenSuccess = {
+	status: "success"
+	message: string
+	confirmation: string
+}
+
+type SubmitTokenFailure = {
+	status: "failure"
+	message: string
+}
+
+type SubmitTokenResponse = SubmitTokenFailure | SubmitTokenSuccess
+
 export default function usio(bot: RunActionBotApi) {
 	const actionName = bot.getActionName()
 
@@ -68,7 +81,7 @@ export default function usio(bot: RunActionBotApi) {
 	bot.log.info("body", requestBody)
 
 	// Create a new site and get its id
-	const result = bot.http.request<unknown, Record<string, string>>({
+	const result = bot.http.request<unknown, SubmitTokenResponse>({
 		method: "POST",
 		url,
 		body: requestBody,
@@ -84,5 +97,14 @@ export default function usio(bot: RunActionBotApi) {
 		return
 	}
 
-	bot.log.info("Result", result)
+	if (result.body.status === "failure") {
+		bot.addError(result.body.message)
+		return
+	}
+
+	if (result.body.status !== "success") {
+		bot.addError("Unexpected status")
+	}
+
+	bot.addResult("confirmation", result.body.confirmation)
 }

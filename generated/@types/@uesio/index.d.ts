@@ -699,6 +699,11 @@ type Context = {
 	 */
 	merge: (text: string) => string
 	/**
+	 * Returns an array of errors that are part of the current context
+	 * @returns Array of error strings
+	 */
+	getCurrentErrors: () => string[]
+	/**
 	 * Returns the mode of the closest context FIELD_MODE frame, or "READ" if no such frame is in context.
 	 * @returns FieldMode
 	 */
@@ -761,6 +766,11 @@ type Context = {
 	 * @returns Wire object
 	 */
 	getWire: (wireId?: string) => Wire
+	/**
+	 * Returns whether or not errors exist in the current context
+	 * @returns true or false
+	 */
+	hasErrors: () => boolean
 }
 
 type ComponentSignalDescriptor = {
@@ -1277,6 +1287,7 @@ type PlainWire = {
 interface SignalDefinition {
 	signal: string
 	stepId?: string
+	[key: string]: Definition
 }
 
 // SIGNAL
