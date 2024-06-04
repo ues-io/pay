@@ -1,4 +1,4 @@
-import { styles, definition, component, api } from "@uesio/ui"
+import { styles, definition, component, api, signal } from "@uesio/ui"
 import { useState } from "react"
 
 import CCInput from "./utilities/cc_input/cc_input"
@@ -6,22 +6,66 @@ import CheckoutButton from "./utilities/checkout_button/checkout_button"
 
 type ComponentDefinition = {
 	submitText: string
+	amount?: string
+	secondaryAmount?: string
+	onSuccessSignals?: signal.SignalDefinition[]
+	onSubmitSignals?: signal.SignalDefinition[]
 }
 
 type SubmitTokenResult = {
 	confirmation: string
 }
 
+const defaultOnSubmitSignals = [
+	{
+		signal: "integration/RUN_ACTION",
+		integration: "usio/pay.usio",
+		stepId: "submit_token",
+		action: "submit_token",
+		params: {
+			token: "$SignalOutput{[checkout][token]}",
+			amount: "$SignalOutput{[checkout][amount]}",
+			secondaryAmount: "$SignalOutput{[checkout][secondaryAmount]}",
+			firstName: "$SignalOutput{[checkout][firstName]}",
+			lastName: "$SignalOutput{[checkout][lastName]}",
+			address: "$SignalOutput{[checkout][address]}",
+			city: "$SignalOutput{[checkout][city]}",
+			state: "$SignalOutput{[checkout][state]}",
+			zip: "$SignalOutput{[checkout][zip]}",
+		},
+	},
+]
+
+const defaultOnSuccessSignals = [
+	{
+		signal: "notification/ADD",
+		text: "Payment success: $SignalOutput{[checkout][confirmation]}",
+		severity: "success",
+	},
+]
+
+const numberToString = (num: string | number | undefined) => {
+	if (!num) return "0"
+	return num + ""
+}
+
 const sampleMerchantKey = "AEAE82F9-5A34-47C3-A61E-1E8EE37BE3AD"
 const errorText = "There was a problem submitting your payment."
 
 const Component: definition.UC<ComponentDefinition> = (props) => {
-	const { context } = props
+	const { context, definition } = props
+	const { onSubmitSignals, onSuccessSignals } = definition
+
 	const { submitText = "Pay Now" } = props.definition
 
 	const TextField = component.getUtility("uesio/io.textfield")
+	const NumberField = component.getUtility("uesio/io.numberfield")
 	const FieldWrapper = component.getUtility("uesio/io.fieldwrapper")
 	const FieldLabel = component.getUtility("uesio/io.fieldlabel")
+
+	const secondaryAmount = definition.secondaryAmount
+
+	const [amount, setAmount] = useState(definition.amount)
 
 	const [firstName, setFirstName] = useState("")
 	const [lastName, setLastName] = useState("")
@@ -44,6 +88,7 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 			locationWrapper: ["grid", "grid-cols-4", "gap-4"],
 			cityWrapper: ["col-span-2"],
 			buttonWrapper: ["mt-6", "flex", "gap-4", "items-start"],
+			amountWrapper: ["grid", "grid-cols-2", "gap-4"],
 			errorWrapper: [
 				"grow",
 				"text-xs",
@@ -59,6 +104,29 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.root}>
+				<div className={classes.amountWrapper}>
+					{definition.amount === undefined && (
+						<FieldWrapper context={context}>
+							<FieldLabel context={context} label="Amount" />
+							<NumberField
+								setValue={setAmount}
+								context={context}
+							/>
+						</FieldWrapper>
+					)}
+					{definition.secondaryAmount === undefined && (
+						<FieldWrapper context={context}>
+							<FieldLabel
+								context={context}
+								label="Secondary Amount"
+							/>
+							<NumberField
+								setValue={setAmount}
+								context={context}
+							/>
+						</FieldWrapper>
+					)}
+				</div>
 				<div className={classes.nameWrapper}>
 					<FieldWrapper context={context}>
 						<FieldLabel context={context} label="First Name" />
@@ -113,25 +181,20 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 						context={context}
 						label={submitText}
 						onSuccess={async (result) => {
-							const newContext = await api.signal.run(
-								{
-									signal: "integration/RUN_ACTION",
-									integration: "usio/pay.usio",
-									stepId: "submit_token",
-									action: "submit_token",
-									params: {
-										token: result.token,
-										amount: "100",
-										secondaryAmount: "3",
-										firstName,
-										lastName,
-										address,
-										city,
-										state,
-										zip,
-									},
-								},
-								context
+							const newContext = await api.signal.runMany(
+								onSubmitSignals || defaultOnSubmitSignals,
+								context.addSignalOutputFrame("checkout", {
+									token: result.token,
+									amount: numberToString(amount),
+									secondaryAmount:
+										numberToString(secondaryAmount),
+									firstName,
+									lastName,
+									address,
+									city,
+									state,
+									zip,
+								})
 							)
 
 							if (newContext.hasErrors()) {
@@ -143,11 +206,15 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 									newContext.getSignalOutputData(
 										"submit_token"
 									) as SubmitTokenResult
-								console.log(
-									"Confirmation",
-									resultData.confirmation
-								)
+
 								setError("")
+								await api.signal.runMany(
+									onSuccessSignals || defaultOnSuccessSignals,
+									context.addSignalOutputFrame(
+										"checkout",
+										resultData
+									)
+								)
 							}
 						}}
 						onError={(result) => {

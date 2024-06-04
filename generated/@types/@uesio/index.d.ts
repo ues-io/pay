@@ -693,6 +693,13 @@ type Context = {
 		data: Record<string, unknown>
 	) => Context
 	/**
+	 * Adds a Signal-specific context frame to the current stack
+	 * @param label - the frame label or stepId
+	 * @param data - arbitrary data to be associated with this signal output context frame
+	 * @returns new Context object
+	 */
+	addSignalOutputFrame: (label: string, data: unknown) => Context
+	/**
 	 * Merges a text string containing merges, e.g. ${uesio/core.uniquekey} in the current context
 	 * @param text - the text to be merged
 	 * @returns the merged text

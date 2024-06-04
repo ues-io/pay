@@ -5,3 +5,5 @@ definition:
   # Components determine the layout and composition of your view
   components:
     - usio/pay.checkout_credit_card:
+        amount: 49.99
+        secondaryAmount: 2.99

@@ -9,7 +9,7 @@ params:
     required: true
   - name: secondaryAmount
     type: TEXT
-    required: true
+    required: false
   - name: firstName
     type: TEXT
     required: true
