@@ -1298,6 +1298,28 @@ export namespace api {
 			context: Context
 		): () => Context
 
+		/**
+		 * Runs a single signal
+		 * @param signal Signal to run
+		 * @param context Context object
+		 * @returns a promise with a new Context that could have been altered by the signal
+		 */
+		export function run(
+			signal: SignalDefinition,
+			context: Context
+		): Promise<Context>
+
+		/**
+		 * Runs a set of signals
+		 * @param signals Array of Signals to run
+		 * @param context Context object
+		 * @returns a promise with a new Context that could have been altered by the signal
+		 */
+		export function runMany(
+			signals: SignalDefinition[],
+			context: Context
+		): Promise<Context>
+
 		export { getHandler }
 	}
 

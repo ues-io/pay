@@ -8,9 +8,6 @@ type ComponentDefinition = {
 	submitText: string
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const signalAPI = api.signal as any
-
 const sampleMerchantKey = "AEAE82F9-5A34-47C3-A61E-1E8EE37BE3AD"
 
 const Component: definition.UC<ComponentDefinition> = (props) => {
@@ -111,7 +108,7 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 						context={context}
 						label={submitText}
 						onSuccess={async (result) => {
-							const newContext = await signalAPI.run(
+							const newContext = await api.signal.run(
 								{
 									signal: "integration/RUN_ACTION",
 									integration: "usio/pay.usio",

@@ -2,13 +2,20 @@ name: checkout_credit_card
 category: DATA
 pack: main
 entrypoint: components/checkout_credit_card/checkout_credit_card
-title: Checkout_credit_card
-discoverable: true
-description: A sample component that outputs text
+variants:
+  - uesio/io.field:uesio/io.default
+  - uesio/io.fieldwrapper:uesio/io.default
+  - uesio/io.fieldlabel:uesio/io.default
+  - uesio/io.button:uesio/io.secondary
+utilities:
+  - uesio/io.textfield
 properties:
   - type: TEXT
     name: text
     label: Text
+title: Checkout_credit_card
+discoverable: true
+description: A sample component that outputs text
 defaultDefinition:
   text: Hello world
 sections:
@@ -17,10 +24,3 @@ sections:
       - text
   - type: STYLES
   - type: DISPLAY
-utilities:
-  - uesio/io.textfield
-variants:
-  - uesio/io.field:uesio/io.default
-  - uesio/io.fieldwrapper:uesio/io.default
-  - uesio/io.fieldlabel:uesio/io.default
-  - uesio/io.button:uesio/io.secondary
