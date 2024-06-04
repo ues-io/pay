@@ -1,0 +1,4 @@
+name: order
+label: Order
+public: true
+pluralLabel: Orders

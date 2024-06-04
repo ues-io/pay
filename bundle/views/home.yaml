@@ -1,0 +1,106 @@
+name: home
+definition:
+  # Wires connect to data in collections
+  wires:
+    ordercount:
+      collection: usio/pay.order
+      fields:
+        uesio/core.id:
+          function: COUNT
+      groupby:
+        uesio/core.createdat:
+          function: DATE_TRUNC_DAY
+      aggregate: true
+      conditions:
+        - field: uesio/core.createdat
+          operator: IN
+          value: THIS_WEEK
+    revenue:
+      collection: usio/pay.order
+      fields:
+        usio/pay.amount:
+          function: SUM
+      groupby:
+        uesio/core.createdat:
+          function: DATE_TRUNC_MONTH
+      aggregate: true
+    neworders:
+      collection: usio/pay.order
+      fields:
+        usio/pay.product:
+        usio/pay.transaction:
+        usio/pay.amount:
+      order:
+        - field: uesio/core.createdat
+          desc: true
+  # Components determine the layout and composition of your view
+  components:
+    - uesio/io.viewlayout:
+        left:
+          - usio/pay.nav:
+        content:
+          - uesio/io.box:
+              uesio.variant: usio/pay.dashboarditem
+              components:
+                - uesio/io.titlebar:
+                    uesio.variant: usio/pay.main
+                    title: Hi $User{firstname}!
+                    subtitle: Welcome to Usio Pay.
+                    avatar:
+                      - uesio/io.text:
+                          uesio.variant: uesio/io.icon
+                          text: home
+                - uesio/io.box:
+                    uesio.variant: usio/pay.scrollsection
+                    components:
+                      - uesio/io.grid:
+                          uesio.variant: usio/pay.two_columns
+                          uesio.styleTokens:
+                            root:
+                              - lg:grid-rows-1
+                          items:
+                            - uesio/io.box:
+                                uesio.variant: usio/pay.dashboarditem
+                                components:
+                                  - uesio/io.titlebar:
+                                      title: Revenue
+                                      uesio.variant: usio/pay.sub
+                            - uesio/io.box:
+                                uesio.variant: usio/pay.dashboarditem
+                                components:
+                                  - uesio/io.titlebar:
+                                      title: Orders This Week
+                                      uesio.variant: usio/pay.sub
+                      - uesio/io.grid:
+                          uesio.variant: usio/pay.three_columns
+                          uesio.styleTokens:
+                            root:
+                              - lg:grid-rows-1
+                          items:
+                            - uesio/io.box:
+                                uesio.variant: usio/pay.dashboarditem
+                                components:
+                                  - uesio/io.titlebar:
+                                      title: New Orders
+                                      uesio.variant: usio/pay.sub
+                                  - uesio/io.box:
+                                      uesio.variant: usio/pay.dashboardpanel
+                                      components:
+                            - uesio/io.box:
+                                uesio.variant: usio/pay.dashboarditem
+                                components:
+                                  - uesio/io.titlebar:
+                                      title: New Products
+                                      uesio.variant: usio/pay.sub
+                                  - uesio/io.box:
+                                      uesio.variant: usio/pay.dashboardpanel
+                                      components:
+                            - uesio/io.box:
+                                uesio.variant: usio/pay.dashboarditem
+                                components:
+                                  - uesio/io.titlebar:
+                                      title: New Transactions
+                                      uesio.variant: usio/pay.sub
+                                  - uesio/io.box:
+                                      uesio.variant: usio/pay.dashboardpanel
+                                      components:

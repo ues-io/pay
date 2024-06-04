@@ -1,0 +1,5 @@
+name: product
+label: Product
+type: REFERENCE
+reference:
+  collection: product

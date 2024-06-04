@@ -1,0 +1,7 @@
+name: amount
+label: Amount
+type: NUMBER
+createOnly: true
+required: true
+number:
+  decimals: 2
