@@ -1,0 +1,8 @@
+name: main_pointer
+label: Main Pointer
+public: true
+extends: usio/pay.main
+definition:
+  uesio.styleTokens:
+    root:
+      - cursor-pointer

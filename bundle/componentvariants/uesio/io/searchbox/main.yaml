@@ -1,0 +1,7 @@
+name: main
+label: Main
+public: true
+definition:
+  fieldVariant: usio/pay.search
+variants:
+  - uesio/io.field:usio/pay.search

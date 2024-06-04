@@ -1,0 +1,71 @@
+name: user_new
+definition:
+  # Wires connect to data in collections
+  wires:
+    user:
+      collection: uesio/core.user
+      fields:
+        uesio/core.firstname:
+        uesio/core.lastname:
+        uesio/core.username:
+        uesio/core.email:
+        uesio/core.initials:
+        uesio/core.profile:
+        uesio/core.picture:
+        uesio/core.language:
+        uesio/core.createdby:
+        uesio/core.createdat:
+        uesio/core.updatedby:
+        uesio/core.updatedat:
+        uesio/core.owner:
+      init:
+        create: true
+        query: false
+      defaults:
+        - field: uesio/core.type
+          valueSource: VALUE
+          value: PERSON
+        - field: uesio/core.profile
+          valueSource: VALUE
+          value: usio/pay.admin
+  # Components determine the layout and composition of your view
+  components:
+    - uesio/io.viewlayout:
+        left:
+          - uesio/crm.nav:
+        content:
+          - uesio/crm.detail_split:
+              main:
+                - uesio/io.list:
+                    wire: user
+                    uesio.id: userList
+                    mode: EDIT
+                    components:
+                      - uesio/io.titlebar:
+                          title: New User
+                          subtitle: $RecordMeta{name}
+                          uesio.variant: usio/pay.main
+                          avatar:
+                            - uesio/io.text:
+                                text: badge
+                                uesio.variant: uesio/io.icon
+                          actions:
+                            - uesio/io.group:
+                                components:
+                                  - uesio/io.button:
+                                      signals:
+                                        - signal: wire/SAVE
+                                          wires:
+                                            - user
+                                        - signal: route/NAVIGATE
+                                          path: user/detail/${uesio/core.id}
+                                      text: Create User
+                                      hotkey: "meta+s"
+                                      uesio.variant: usio/pay.primary
+                                  - uesio/io.button:
+                                      signals:
+                                        - signal: wire/RESET
+                                          wire: user
+                                      text: Reset
+                                      uesio.variant: usio/pay.secondary
+                      - uesio/crm.user_primary_section:

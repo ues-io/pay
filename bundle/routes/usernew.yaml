@@ -1,0 +1,5 @@
+name: usernew
+path: usernew
+view: user_new
+theme: uesio/core.default
+title: User Create New View

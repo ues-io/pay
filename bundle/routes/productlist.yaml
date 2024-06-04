@@ -1,0 +1,5 @@
+name: productlist
+path: product
+view: product_list
+theme: uesio/core.default
+title: Product List View

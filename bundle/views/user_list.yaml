@@ -1,0 +1,78 @@
+name: user_list
+definition:
+  # Wires connect to data in collections
+  wires:
+    user:
+      collection: uesio/core.user
+      fields:
+        uesio/core.firstname:
+        uesio/core.lastname:
+        uesio/core.username:
+        uesio/core.initials:
+        uesio/core.email:
+        uesio/core.profile:
+      batchsize: 200
+      conditions:
+        - field: uesio/core.username
+          operator: NOT_IN
+          values:
+            - system
+            - guest
+  # Components determine the layout and composition of your view
+  components:
+    - uesio/io.viewlayout:
+        left:
+          - usio/pay.nav:
+        content:
+          - uesio/io.titlebar:
+              title: $Collection{user:pluralLabel}
+              subtitle: List View
+              uesio.variant: usio/pay.main
+              avatar:
+                - uesio/io.text:
+                    text: badge
+                    uesio.variant: uesio/io.iconoutline
+              actions:
+                - uesio/io.button:
+                    signals:
+                      - signal: route/NAVIGATE
+                        path: usernew
+                    text: Add New User
+                    uesio.variant: usio/pay.secondary
+                    uesio.display:
+                      - type: wireHasNoChanges
+                        wire: user
+          - uesio/io.box:
+              uesio.variant: usio/pay.primarysection
+              components:
+                - uesio/io.toolbar:
+                    linkedComponentType: uesio/io.table
+                    linkedComponentId: userTable
+                    left:
+                      - uesio/io.searchbox:
+                          uesio.variant: usio/pay.main
+                          wire: user
+                          placeholder: Search Users
+                          searchFields:
+                            - uesio/core.firstname
+                            - uesio/core.lastname
+                            - uesio/core.username
+                - uesio/io.table:
+                    uesio.variant: usio/pay.main
+                    rowactions:
+                      - icon: visibility
+                        text: View
+                        type: DEFAULT
+                        uesio.display:
+                          - type: recordIsNotNew
+                        signals:
+                          - signal: route/NAVIGATE
+                            path: user/detail/${uesio/core.id}
+                    columns:
+                      - components:
+                          - usio/pay.user_tile:
+                      - field: uesio/core.email
+                    uesio.id: userTable
+                    mode: READ
+                    wire: user
+                    pagesize: 10

@@ -1,0 +1,7 @@
+name: primarysection
+label: Primary Section
+extends: usio/pay.section
+definition:
+  uesio.styleTokens:
+    root:
+      - mt-0

@@ -1,0 +1,71 @@
+name: transaction_list
+definition:
+  # Wires connect to data in collections
+  wires:
+    transaction:
+      collection: usio/pay.transaction
+      fields:
+        usio/pay.amount:
+        usio/pay.confirmation:
+        usio/pay.description:
+        usio/pay.firstname:
+        usio/pay.lastname:
+        usio/pay.secondary_amount:
+      batchsize: 200
+      order:
+        - desc: true
+          field: uesio/core.updatedat
+  # Components determine the layout and composition of your view
+  components:
+    - uesio/io.viewlayout:
+        left:
+          - usio/pay.nav:
+        content:
+          - uesio/io.titlebar:
+              title: $Collection{transaction:pluralLabel}
+              subtitle: List View
+              uesio.variant: usio/pay.main
+              avatar:
+                - uesio/io.text:
+                    uesio.variant: uesio/io.icon
+                    text: credit_card
+          - uesio/io.box:
+              uesio.variant: usio/pay.primarysection
+              components:
+                - uesio/io.toolbar:
+                    linkedComponentType: uesio/io.table
+                    linkedComponentId: transactionTable
+                    left:
+                      - uesio/io.searchbox:
+                          uesio.variant: usio/pay.main
+                          wire: transaction
+                          placeholder: Search Transactions
+                          searchFields:
+                            - usio/pay.description
+                            - usio/pay.firstname
+                            - usio/pay.lastname
+                - uesio/io.table:
+                    uesio.variant: usio/pay.main
+                    rowactions:
+                      - icon: visibility
+                        text: View
+                        type: DEFAULT
+                        uesio.display:
+                          - type: recordIsNotNew
+                        signals:
+                          - signal: route/NAVIGATE_TO_ASSIGNMENT
+                            viewtype: detail
+                            recordid: ${uesio/core.id}
+                            collection: usio/pay.transaction
+                    columns:
+                      - field: usio/pay.firstname
+                      - field: usio/pay.lastname
+                      - field: usio/pay.amount
+                      - field: usio/pay.secondary_amount
+                        label: Fee
+                      - field: usio/pay.description
+                      - field: usio/pay.confirmation
+                    uesio.id: transactionTable
+                    mode: READ
+                    wire: transaction
+                    pagesize: 10

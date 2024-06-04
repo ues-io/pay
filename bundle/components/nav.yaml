@@ -152,10 +152,34 @@ definition:
                               avatar:
                                 - uesio/io.text:
                                     uesio.variant: uesio/io.icon
-                                    text: payments
+                                    text: shopping_cart
                               signals:
                                 - signal: route/NAVIGATE_TO_ASSIGNMENT
                                   collection: usio/pay.order
+                                  viewtype: list
+                    - uesio/io.box:
+                        uesio.styleTokens:
+                          root:
+                            - flex
+                            - gap-2
+                            - items-center
+                        components:
+                          - uesio/io.tile:
+                              uesio.variant: uesio/io.nav
+                              uesio.styleTokens:
+                                root:
+                                  - flex
+                                  - grow
+                              content:
+                                - uesio/io.text:
+                                    text: Transactions
+                              avatar:
+                                - uesio/io.text:
+                                    uesio.variant: uesio/io.icon
+                                    text: credit_card
+                              signals:
+                                - signal: route/NAVIGATE_TO_ASSIGNMENT
+                                  collection: usio/pay.transaction
                                   viewtype: list
       content:
         - uesio/core.slot:

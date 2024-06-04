@@ -1,0 +1,5 @@
+name: userdetail
+path: user/detail/{recordid}
+view: user_detail
+theme: uesio/core.default
+title: User Detail View

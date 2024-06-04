@@ -1,0 +1,5 @@
+name: transactionlist
+path: transaction
+view: transaction_list
+theme: uesio/core.default
+title: Transaction List View

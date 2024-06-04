@@ -1,0 +1,5 @@
+name: orderlist
+path: order
+view: order_list
+theme: uesio/core.default
+title: Order List View
