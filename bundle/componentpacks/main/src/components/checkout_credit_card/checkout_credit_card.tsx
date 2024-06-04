@@ -5,9 +5,10 @@ import CCInput from "./utilities/cc_input/cc_input"
 import CheckoutButton from "./utilities/checkout_button/checkout_button"
 
 type ComponentDefinition = {
-	submitText: string
+	submitText?: string
 	amount?: string
 	secondaryAmount?: string
+	description?: string
 	onSuccessSignals?: signal.SignalDefinition[]
 	onSubmitSignals?: signal.SignalDefinition[]
 }
@@ -32,6 +33,7 @@ const defaultOnSubmitSignals = [
 			city: "$SignalOutput{[checkout][city]}",
 			state: "$SignalOutput{[checkout][state]}",
 			zip: "$SignalOutput{[checkout][zip]}",
+			description: "$SignalOutput{[checkout][description]}",
 		},
 	},
 ]
@@ -56,7 +58,7 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 	const { context, definition } = props
 	const { onSubmitSignals, onSuccessSignals } = definition
 
-	const { submitText = "Pay Now" } = props.definition
+	const { submitText = "Pay Now", description } = props.definition
 
 	const TextField = component.getUtility("uesio/io.textfield")
 	const NumberField = component.getUtility("uesio/io.numberfield")
@@ -82,7 +84,6 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 
 	const classes = styles.useStyleTokens(
 		{
-			wrapper: ["h-full", "grid", "justify-center", "items-center"],
 			root: ["max-w-[390px]", "m-8"],
 			nameWrapper: ["grid", "grid-cols-2", "gap-4"],
 			locationWrapper: ["grid", "grid-cols-4", "gap-4"],
@@ -102,134 +103,119 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 	)
 
 	return (
-		<div className={classes.wrapper}>
-			<div className={classes.root}>
-				<div className={classes.amountWrapper}>
-					{definition.amount === undefined && (
-						<FieldWrapper context={context}>
-							<FieldLabel context={context} label="Amount" />
-							<NumberField
-								setValue={setAmount}
-								context={context}
-							/>
-						</FieldWrapper>
-					)}
-					{definition.secondaryAmount === undefined && (
-						<FieldWrapper context={context}>
-							<FieldLabel
-								context={context}
-								label="Secondary Amount"
-							/>
-							<NumberField
-								setValue={setAmount}
-								context={context}
-							/>
-						</FieldWrapper>
-					)}
-				</div>
-				<div className={classes.nameWrapper}>
+		<div className={classes.root}>
+			<div className={classes.amountWrapper}>
+				{definition.amount === undefined && (
 					<FieldWrapper context={context}>
-						<FieldLabel context={context} label="First Name" />
-						<TextField setValue={setFirstName} context={context} />
+						<FieldLabel context={context} label="Amount" />
+						<NumberField setValue={setAmount} context={context} />
 					</FieldWrapper>
+				)}
+				{definition.secondaryAmount === undefined && (
 					<FieldWrapper context={context}>
-						<FieldLabel context={context} label="Last Name" />
-						<TextField setValue={setLastName} context={context} />
+						<FieldLabel
+							context={context}
+							label="Secondary Amount"
+						/>
+						<NumberField setValue={setAmount} context={context} />
 					</FieldWrapper>
-				</div>
+				)}
+			</div>
+			<div className={classes.nameWrapper}>
 				<FieldWrapper context={context}>
-					<FieldLabel context={context} label="Email" />
-					<TextField setValue={setEmail} context={context} />
+					<FieldLabel context={context} label="First Name" />
+					<TextField setValue={setFirstName} context={context} />
 				</FieldWrapper>
-				<CCInput
-					onNumberChange={setCardNumber}
-					onExpiryChange={setExpiryDate}
-					onCVCChange={setCVC}
+				<FieldWrapper context={context}>
+					<FieldLabel context={context} label="Last Name" />
+					<TextField setValue={setLastName} context={context} />
+				</FieldWrapper>
+			</div>
+			<FieldWrapper context={context}>
+				<FieldLabel context={context} label="Email" />
+				<TextField setValue={setEmail} context={context} />
+			</FieldWrapper>
+			<CCInput
+				onNumberChange={setCardNumber}
+				onExpiryChange={setExpiryDate}
+				onCVCChange={setCVC}
+				context={context}
+				error={error}
+			/>
+			<FieldWrapper context={context}>
+				<FieldLabel context={context} label="Address" />
+				<TextField setValue={setAddress} context={context} />
+			</FieldWrapper>
+			<div className={classes.locationWrapper}>
+				<FieldWrapper context={context} className={classes.cityWrapper}>
+					<FieldLabel context={context} label="City" />
+					<TextField setValue={setCity} context={context} />
+				</FieldWrapper>
+				<FieldWrapper context={context}>
+					<FieldLabel context={context} label="State" />
+					<TextField setValue={setState} context={context} />
+				</FieldWrapper>
+				<FieldWrapper context={context}>
+					<FieldLabel context={context} label="Zip" />
+					<TextField setValue={setZip} context={context} />
+				</FieldWrapper>
+			</div>
+			<div className={classes.buttonWrapper}>
+				<CheckoutButton
+					request={{
+						merchantKey: sampleMerchantKey,
+						email,
+						cardNumber,
+						expiryDate,
+						cvc,
+					}}
 					context={context}
-					error={error}
-				/>
-				<FieldWrapper context={context}>
-					<FieldLabel context={context} label="Address" />
-					<TextField setValue={setAddress} context={context} />
-				</FieldWrapper>
-				<div className={classes.locationWrapper}>
-					<FieldWrapper
-						context={context}
-						className={classes.cityWrapper}
-					>
-						<FieldLabel context={context} label="City" />
-						<TextField setValue={setCity} context={context} />
-					</FieldWrapper>
-					<FieldWrapper context={context}>
-						<FieldLabel context={context} label="State" />
-						<TextField setValue={setState} context={context} />
-					</FieldWrapper>
-					<FieldWrapper context={context}>
-						<FieldLabel context={context} label="Zip" />
-						<TextField setValue={setZip} context={context} />
-					</FieldWrapper>
-				</div>
-				<div className={classes.buttonWrapper}>
-					<CheckoutButton
-						request={{
-							merchantKey: sampleMerchantKey,
-							email,
-							cardNumber,
-							expiryDate,
-							cvc,
-						}}
-						context={context}
-						label={submitText}
-						onSuccess={async (result) => {
-							const newContext = await api.signal.runMany(
-								onSubmitSignals || defaultOnSubmitSignals,
-								context.addSignalOutputFrame("checkout", {
-									token: result.token,
-									amount: numberToString(amount),
-									secondaryAmount:
-										numberToString(secondaryAmount),
-									firstName,
-									lastName,
-									address,
-									city,
-									state,
-									zip,
-								})
+					label={submitText}
+					onSuccess={async (result) => {
+						const newContext = await api.signal.runMany(
+							onSubmitSignals || defaultOnSubmitSignals,
+							context.addSignalOutputFrame("checkout", {
+								token: result.token,
+								amount: numberToString(amount),
+								secondaryAmount:
+									numberToString(secondaryAmount),
+								firstName,
+								lastName,
+								address,
+								city,
+								state,
+								zip,
+								description,
+							})
+						)
+
+						if (newContext.hasErrors()) {
+							setError(newContext.getCurrentErrors().join(", "))
+						} else {
+							const resultData = newContext.getSignalOutputData(
+								"submit_token"
+							) as SubmitTokenResult
+
+							setError("")
+							await api.signal.runMany(
+								onSuccessSignals || defaultOnSuccessSignals,
+								context.addSignalOutputFrame(
+									"checkout",
+									resultData
+								)
 							)
-
-							if (newContext.hasErrors()) {
-								setError(
-									newContext.getCurrentErrors().join(", ")
-								)
-							} else {
-								const resultData =
-									newContext.getSignalOutputData(
-										"submit_token"
-									) as SubmitTokenResult
-
-								setError("")
-								await api.signal.runMany(
-									onSuccessSignals || defaultOnSuccessSignals,
-									context.addSignalOutputFrame(
-										"checkout",
-										resultData
-									)
-								)
-							}
-						}}
-						onError={(result) => {
-							setError(result.message)
-						}}
-					/>
-					{error && (
-						<div className={classes.errorWrapper}>
-							<div className={classes.errorTitle}>
-								{errorText}
-							</div>
-							<div>{error}</div>
-						</div>
-					)}
-				</div>
+						}
+					}}
+					onError={(result) => {
+						setError(result.message)
+					}}
+				/>
+				{error && (
+					<div className={classes.errorWrapper}>
+						<div className={classes.errorTitle}>{errorText}</div>
+						<div>{error}</div>
+					</div>
+				)}
 			</div>
 		</div>
 	)

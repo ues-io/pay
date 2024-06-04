@@ -10,17 +10,22 @@ variants:
 utilities:
   - uesio/io.textfield
 properties:
-  - type: TEXT
-    name: text
-    label: Text
-title: Checkout_credit_card
+  - type: NUMBER
+    name: amount
+    label: Amount
+  - type: NUMBER
+    name: secondaryAmount
+    label: Secondary Amount
+title: Credit Card Checkout
 discoverable: true
-description: A sample component that outputs text
+description: A usio.com credit card checkout form.
 defaultDefinition:
-  text: Hello world
+  amount: 100.00
+  secondaryAmount: 2.99
 sections:
   - type: HOME
     properties:
-      - text
+      - amount
+      - secondaryAmount
   - type: STYLES
   - type: DISPLAY

@@ -1,0 +1,47 @@
+name: pay_screen
+category: LAYOUT
+type: DECLARATIVE
+slots:
+  - name: main
+properties:
+  - type: NUMBER
+    name: amount
+    label: Amount
+  - type: NUMBER
+    name: secondaryAmount
+    label: Secondary Amount
+definition:
+  - uesio/io.grid:
+      uesio.styleTokens:
+        root:
+          - grid-cols-1
+          - md:grid-cols-2
+          - from-indigo-700
+          - to-violet-600
+          - bg-gradient-to-br
+          - min-h-screen
+      items:
+        - uesio/io.grid:
+            uesio.variant: uesio/io.center
+            uesio.styleTokens:
+              root:
+                - justify-items-center
+            items:
+              - uesio/core.slot:
+                  name: main
+        - uesio/io.grid:
+            uesio.variant: uesio/io.center
+            uesio.styleTokens:
+              root:
+                - bg-white
+            items:
+              - usio/pay.checkout_credit_card:
+                  amount: $Prop{amount}
+                  secondaryAmount: $Prop{secondaryAmount}
+title: Payment Screen
+discoverable: true
+description: A payment screen layout
+sections:
+  - type: HOME
+    properties:
+  - type: DISPLAY

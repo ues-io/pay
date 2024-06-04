@@ -1,0 +1,4 @@
+name: description
+label: Description
+type: LONGTEXT
+createOnly: true

@@ -4,6 +4,17 @@ definition:
   wires: {}
   # Components determine the layout and composition of your view
   components:
-    - usio/pay.checkout_credit_card:
-        amount: 49.99
-        secondaryAmount: 2.99
+    - usio/pay.pay_screen:
+        amount: 40.99
+        secondaryAmount: 1.99
+        description: "A Sample Test Payment"
+        main:
+          - uesio/io.image:
+              file: usio/pay.logowhite
+              height: 60
+          - uesio/io.text:
+              text: Pay with confidence.
+              uesio.styleTokens:
+                root:
+                  - text-white
+                  - font-light

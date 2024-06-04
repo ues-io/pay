@@ -1,0 +1,7 @@
+name: secondary_amount
+label: Secondary Amount
+type: NUMBER
+createOnly: true
+required: true
+number:
+  decimals: 2

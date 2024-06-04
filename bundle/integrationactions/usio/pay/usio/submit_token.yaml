@@ -28,3 +28,6 @@ params:
   - name: zip
     type: TEXT
     required: true
+  - name: description
+    type: TEXT
+    required: false

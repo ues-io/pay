@@ -1,0 +1,7 @@
+name: transaction
+label: Transaction
+public: true
+pluralLabel: Transactions
+uniqueKey:
+  - confirmation
+nameField: confirmation

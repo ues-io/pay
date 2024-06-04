@@ -1,4 +1,4 @@
-import { RunActionBotApi } from "@uesio/bots"
+import { RunActionBotApi, WireRecord } from "@uesio/bots"
 
 type SubmitTokenSuccess = {
 	status: "success"
@@ -30,6 +30,8 @@ export default function usio(bot: RunActionBotApi) {
 	const city = bot.params.get("city") as string
 	const state = bot.params.get("state") as string
 	const zip = bot.params.get("zip") as string
+
+	const description = bot.params.get("description") as string
 
 	const creds = bot.getCredentials()
 	const merchantId = creds.merchantId
@@ -105,6 +107,18 @@ export default function usio(bot: RunActionBotApi) {
 	if (result.body.status !== "success") {
 		bot.addError("Unexpected status")
 	}
+
+	// Since we were successful, create a transaction record with the confirmation id.
+	bot.save("usio/pay.transaction", [
+		{
+			"usio/pay.firstname": firstname,
+			"usio/pay.lastname": lastname,
+			"usio/pay.amount": parseFloat(amount) || 0,
+			"usio/pay.secondary_amount": parseFloat(secondaryAmount) || 0,
+			"usio/pay.confirmation": result.body.confirmation,
+			"usio/pay.description": description,
+		},
+	] as unknown as WireRecord[])
 
 	bot.addResult("confirmation", result.body.confirmation)
 }
