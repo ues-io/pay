@@ -37,11 +37,19 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 	const classes = styles.useStyleTokens(
 		{
 			wrapper: ["h-full", "grid", "justify-center", "items-center"],
-			root: ["max-w-[380px]", "m-8"],
+			root: ["max-w-[390px]", "m-8"],
 			nameWrapper: ["grid", "grid-cols-2", "gap-4"],
 			locationWrapper: ["grid", "grid-cols-4", "gap-4"],
 			cityWrapper: ["col-span-2"],
-			buttonWrapper: ["mt-6"],
+			buttonWrapper: ["mt-6", "flex", "gap-4", "items-start"],
+			errorWrapper: [
+				"grow",
+				"text-xs",
+				"text-rose-500",
+				"py-1",
+				"font-bold",
+			],
+			errorTitle: ["font-light"],
 		},
 		props
 	)
@@ -102,35 +110,41 @@ const Component: definition.UC<ComponentDefinition> = (props) => {
 						}}
 						context={context}
 						label={submitText}
-						onSuccess={(result) => {
-							console.log(result)
-
-							signalAPI.runMany(
-								[
-									{
-										signal: "integration/RUN_ACTION",
-										integration: "usio/pay.usio",
-										action: "submit_token",
-										params: {
-											token: result.token,
-											amount: "100",
-											secondaryAmount: "3",
-											firstName,
-											lastName,
-											address,
-											city,
-											state,
-											zip,
-										},
+						onSuccess={async (result) => {
+							const newContext = await signalAPI.run(
+								{
+									signal: "integration/RUN_ACTION",
+									integration: "usio/pay.usio",
+									action: "submit_token",
+									params: {
+										token: result.token,
+										amount: "100",
+										secondaryAmount: "3",
+										firstName,
+										lastName,
+										address,
+										city,
+										state,
+										zip,
 									},
-								],
+								},
 								context
 							)
+							console.log("Got Heeeeeeer")
+							setError("")
 						}}
 						onError={(result) => {
 							setError(result.message)
 						}}
 					/>
+					{error && (
+						<div className={classes.errorWrapper}>
+							<div className={classes.errorTitle}>
+								There was a problem submitting your payment.
+							</div>
+							<div>{error}</div>
+						</div>
+					)}
 				</div>
 			</div>
 		</div>

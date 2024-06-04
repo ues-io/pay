@@ -13,8 +13,7 @@ interface CCInputProps {
 }
 
 const CCInput: definition.UtilityComponent<CCInputProps> = (props) => {
-	const { onNumberChange, onExpiryChange, onCVCChange, context, error } =
-		props
+	const { onNumberChange, onExpiryChange, onCVCChange, context } = props
 
 	const FieldWrapper = component.getUtility("uesio/io.fieldwrapper")
 	const FieldLabel = component.getUtility("uesio/io.fieldlabel")
@@ -59,10 +58,8 @@ const CCInput: definition.UtilityComponent<CCInputProps> = (props) => {
 		"uesio/io.field"
 	)
 
-	const fieldErrors = error ? [{ message: error }] : undefined
-
 	return (
-		<FieldWrapper errors={fieldErrors} context={context}>
+		<FieldWrapper context={context}>
 			<FieldLabel context={context} label="Credit Card" />
 			<div
 				className={styles.cx(
