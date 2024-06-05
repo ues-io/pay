@@ -1,0 +1,5 @@
+name: orderdetail
+path: order/detail/{recordid}
+view: order_detail
+theme: uesio/core.default
+title: Order Detail View

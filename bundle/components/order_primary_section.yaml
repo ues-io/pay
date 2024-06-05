@@ -1,0 +1,23 @@
+name: order_primary_section
+category: LAYOUT
+type: DECLARATIVE
+definition:
+  - uesio/io.box:
+      components:
+        - uesio/io.grid:
+            uesio.variant: usio/pay.two_columns
+            items:
+              - uesio/io.field:
+                  fieldId: usio/pay.product
+              - uesio/io.field:
+                  fieldId: usio/pay.transaction
+              - uesio/io.field:
+                  fieldId: usio/pay.amount
+      uesio.variant: usio/pay.primarysection
+title: Order Primary Section
+discoverable: true
+description: Order Primary Section
+sections:
+  - type: HOME
+    properties:
+  - type: DISPLAY

@@ -1,0 +1,6 @@
+name: initials
+label: Initials
+type: FORMULA
+formula:
+  expression: FIRST(usio/pay.name)
+  returntype: TEXT

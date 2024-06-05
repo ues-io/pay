@@ -1,0 +1,5 @@
+name: transactiondetail
+path: transaction/detail/{recordid}
+view: transaction_detail
+theme: uesio/core.default
+title: Transaction Detail View

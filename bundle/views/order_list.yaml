@@ -41,7 +41,6 @@ definition:
                             - usio/pay.product
                 - uesio/io.table:
                     uesio.variant: usio/pay.main
-                    selectable: true
                     rowactions:
                       - icon: visibility
                         text: View
@@ -54,7 +53,6 @@ definition:
                             recordid: ${uesio/core.id}
                             collection: usio/pay.order
                     columns:
-                      - components:
                       - field: usio/pay.product
                       - field: usio/pay.amount
                       - field: usio/pay.transaction

@@ -8,6 +8,8 @@ definition:
         usio/pay.name:
         usio/pay.description:
         usio/pay.price:
+        usio/pay.image:
+        usio/pay.initials:
       batchsize: 200
       order:
         - desc: true
@@ -164,6 +166,18 @@ definition:
                             collection: usio/pay.product
                     columns:
                       - components:
+                          - uesio/io.avatar:
+                              uesio.variant: usio/pay.tablecolumn
+                              text: ${initials}
+                              image: $UserFile{usio/pay.image}
+                        uesio.display:
+                          - type: fieldMode
+                            mode: EDIT
+                      - components:
+                          - usio/pay.product_tile:
+                        uesio.display:
+                          - type: fieldMode
+                            mode: READ
                       - field: usio/pay.name
                       - field: usio/pay.description
                       - field: usio/pay.price

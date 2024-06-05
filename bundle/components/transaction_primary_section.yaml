@@ -1,0 +1,29 @@
+name: transaction_primary_section
+category: LAYOUT
+type: DECLARATIVE
+definition:
+  - uesio/io.box:
+      components:
+        - uesio/io.grid:
+            uesio.variant: usio/pay.two_columns
+            items:
+              - uesio/io.field:
+                  fieldId: usio/pay.firstname
+              - uesio/io.field:
+                  fieldId: usio/pay.lastname
+              - uesio/io.field:
+                  fieldId: usio/pay.description
+              - uesio/io.field:
+                  fieldId: usio/pay.confirmation
+              - uesio/io.field:
+                  fieldId: usio/pay.amount
+              - uesio/io.field:
+                  fieldId: usio/pay.secondary_amount
+      uesio.variant: usio/pay.primarysection
+title: Transaction Primary Section
+discoverable: true
+description: Transaction Primary Section
+sections:
+  - type: HOME
+    properties:
+  - type: DISPLAY
