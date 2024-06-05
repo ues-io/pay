@@ -1,0 +1,5 @@
+name: productnew
+path: productnew
+view: product_new
+theme: uesio/core.default
+title: Product Create New View

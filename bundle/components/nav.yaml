@@ -128,7 +128,7 @@ definition:
                                   collection: usio/pay.product
                                   viewtype: list
                           - uesio/io.tile:
-                              uesio.variant: uesio/pay.navadd
+                              uesio.variant: usio/pay.navadd
                               signals:
                                 - signal: route/NAVIGATE_TO_ASSIGNMENT
                                   collection: usio/pay.product

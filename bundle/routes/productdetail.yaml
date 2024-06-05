@@ -1,0 +1,5 @@
+name: productdetail
+path: product/detail/{recordid}
+view: product_detail
+theme: uesio/core.default
+title: Product Detail View

@@ -1,0 +1,26 @@
+name: product_primary_section
+category: LAYOUT
+type: DECLARATIVE
+definition:
+  - uesio/io.box:
+      components:
+        - uesio/io.grid:
+            uesio.variant: usio/pay.two_columns
+            items:
+              - uesio/io.field:
+                  fieldId: usio/pay.name
+              - uesio/io.field:
+                  fieldId: usio/pay.price
+              - uesio/io.field:
+                  uesio.styleTokens:
+                    wrapper:
+                      - col-span-2
+                  fieldId: usio/pay.description
+      uesio.variant: usio/pay.primarysection
+title: Product Primary Section
+discoverable: true
+description: Product Primary Section
+sections:
+  - type: HOME
+    properties:
+  - type: DISPLAY

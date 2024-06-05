@@ -1,0 +1,20 @@
+name: settings
+definition:
+  # Wires connect to data in collections
+  wires:
+  components:
+    - uesio/io.viewlayout:
+        left:
+          - usio/pay.nav:
+        content:
+          - uesio/io.titlebar:
+              uesio.variant: usio/pay.main
+              title: Settings
+              subtitle: Personalize Usio Pay for your organization.
+              avatar:
+                - uesio/io.text:
+                    uesio.variant: uesio/io.icon
+                    text: settings
+          - uesio/io.box:
+              uesio.variant: usio/pay.primarysection
+              components:
