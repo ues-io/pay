@@ -8,6 +8,7 @@ definition:
         - uesio/io.titlebar:
             uesio.variant: usio/pay.item
             title: ${name}
+            subtitle: ${description}
             actions:
       avatar:
         - uesio/io.avatar:

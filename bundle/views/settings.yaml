@@ -18,3 +18,63 @@ definition:
           - uesio/io.box:
               uesio.variant: usio/pay.primarysection
               components:
+                - uesio/io.tabs:
+                    uesio.variant: usio/pay.main
+                    tabs:
+                      - id: credentials
+                        label: Usio Credentials
+                        components:
+                          - uesio/io.grid:
+                              uesio.variant: usio/pay.three_columns
+                              uesio.styleTokens:
+                                root:
+                                  - m-6
+                              items:
+                                - uesio/io.box:
+                                    uesio.styleTokens:
+                                      root:
+                                        - lg:col-span-2
+                                        - lg:order-first
+                                        - order-last
+                                    components:
+                                - uesio/io.box:
+                                    components:
+                                      - uesio/io.box:
+                                          uesio.variant: usio/pay.note
+                                          components:
+                                            - uesio/io.text:
+                                                text: Set your Usio credentials here. You will need to enter your Usio Api Key, Username and Password.
+                      - id: sampledata
+                        label: Sample Data
+                        components:
+                          - uesio/io.grid:
+                              uesio.variant: usio/pay.three_columns
+                              uesio.styleTokens:
+                                root:
+                                  - m-6
+                              items:
+                                - uesio/io.box:
+                                    uesio.styleTokens:
+                                      root:
+                                        - lg:col-span-2
+                                        - lg:order-first
+                                        - order-last
+                                    components:
+                                - uesio/io.box:
+                                    components:
+                                      - uesio/io.box:
+                                          uesio.variant: usio/pay.note
+                                          components:
+                                            - uesio/io.text:
+                                                text: If you're just learning how to use Usio Pay, you can add some sample data to your site. You can remove this sample data later when you're ready to use your own business data.
+                                                element: div
+                                            - uesio/io.button:
+                                                uesio.variant: usio/pay.note
+                                                text: Create Sample Data
+                                                signals:
+                                                  - signal: bot/CALL
+                                                    bot: usio/pay.create_sample_data
+                                                  - signal: notification/ADD
+                                                    text: Sample data has been added.
+                                                    details: You can now view the data by using the sidebar navigation.
+                                                    severity: success

@@ -1,4 +1,4 @@
-name: external_id
+name: externalid
 label: External Id
 type: AUTONUMBER
 autonumber:

@@ -10,6 +10,8 @@ definition:
         usio/pay.image:
         usio/pay.price:
         usio/pay.initials:
+        usio/pay.slug:
+        usio/pay.published:
         uesio/core.updatedby: {}
         uesio/core.updatedat: {}
         uesio/core.createdby: {}
@@ -39,6 +41,21 @@ definition:
                           actions:
                             - uesio/io.toolbar:
                                 right:
+                                  - uesio/io.button:
+                                      signals:
+                                        - signal: route/NAVIGATE
+                                          path: buy/${slug}
+                                      text: View Listing
+                                      icon: visibility
+                                      iconFill: false
+                                      uesio.variant: usio/pay.secondary
+                                      uesio.display:
+                                        - type: mergeValue
+                                          value: EDIT
+                                          operator: NOT_EQUALS
+                                          sourceValue: $ComponentState{[uesio/io.list][productList][mode]}
+                                        - type: wireHasNoChanges
+                                          wire: product
                                   - uesio/io.button:
                                       signals:
                                         - signal: wire/SAVE

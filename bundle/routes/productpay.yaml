@@ -1,0 +1,5 @@
+name: productpay
+path: buy/{slug}
+view: product_pay
+theme: uesio/core.default
+title: Product Pay

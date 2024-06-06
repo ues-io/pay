@@ -12,6 +12,10 @@ definition:
               - uesio/io.field:
                   fieldId: usio/pay.price
               - uesio/io.field:
+                  fieldId: usio/pay.slug
+              - uesio/io.field:
+                  fieldId: usio/pay.published
+              - uesio/io.field:
                   uesio.styleTokens:
                     wrapper:
                       - col-span-2

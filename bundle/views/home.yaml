@@ -33,6 +33,17 @@ definition:
       order:
         - field: uesio/core.createdat
           desc: true
+    newproducts:
+      collection: usio/pay.product
+      fields:
+        usio/pay.name:
+        usio/pay.description:
+        usio/pay.price:
+        usio/pay.image:
+        usio/pay.initials:
+      order:
+        - field: uesio/core.createdat
+          desc: true
   # Components determine the layout and composition of your view
   components:
     - uesio/io.viewlayout:
@@ -95,6 +106,13 @@ definition:
                                   - uesio/io.box:
                                       uesio.variant: usio/pay.dashboardpanel
                                       components:
+                                        - uesio/io.deck:
+                                            wire: newproducts
+                                            mode: READ
+                                            id: newproducts
+                                            uesio.variant: usio/pay.tiles
+                                            components:
+                                              - usio/pay.product_tile:
                             - uesio/io.box:
                                 uesio.variant: usio/pay.dashboarditem
                                 components:

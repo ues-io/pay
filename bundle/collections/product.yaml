@@ -3,5 +3,5 @@ label: Product
 public: true
 pluralLabel: Products
 uniqueKey:
-  - external_id
+  - externalid
 nameField: name

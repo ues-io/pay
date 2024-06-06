@@ -8,6 +8,8 @@ definition:
         usio/pay.name:
         usio/pay.description:
         usio/pay.price:
+        usio/pay.slug:
+        usio/pay.published:
       init:
         create: true
         query: false

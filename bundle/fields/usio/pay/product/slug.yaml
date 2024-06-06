@@ -1,0 +1,4 @@
+name: slug
+label: URL Slug
+type: TEXT
+required: true
