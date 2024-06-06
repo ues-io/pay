@@ -109,7 +109,7 @@ export default function usio(bot: RunActionBotApi) {
 	}
 
 	// Since we were successful, create a transaction record with the confirmation id.
-	bot.save("usio/pay.transaction", [
+	const transactionResult = bot.save("usio/pay.transaction", [
 		{
 			"usio/pay.firstname": firstname,
 			"usio/pay.lastname": lastname,
@@ -120,5 +120,6 @@ export default function usio(bot: RunActionBotApi) {
 		},
 	] as unknown as WireRecord[])
 
+	bot.addResult("transactionid", transactionResult?.[0]?.["uesio/core.id"])
 	bot.addResult("confirmation", result.body.confirmation)
 }

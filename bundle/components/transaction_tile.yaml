@@ -1,0 +1,43 @@
+name: transaction_tile
+category: LAYOUT
+type: DECLARATIVE
+definition:
+  - uesio/io.tile:
+      uesio.variant: usio/pay.item
+      content:
+        - uesio/io.titlebar:
+            uesio.variant: usio/pay.item
+            title: ${firstname} ${lastname}
+            subtitle: ${description}
+            actions:
+              - uesio/io.titlebar:
+                  uesio.display:
+                    - type: hasValue
+                      value: $Prop{showAmountInfo}
+                  uesio.variant: usio/pay.subitem
+                  uesio.styleTokens:
+                    content:
+                      - text-right
+                    title:
+                      - "[min-height:16px]"
+                      - font-normal
+                      - text-slate-800
+                    subtitle:
+                  title: $Currency{amount}
+                  subtitle: $Date{uesio/core.createdat}
+      avatar:
+        - uesio/io.text:
+            uesio.variant: usio/pay.avatariconoutline
+            text: credit_card
+      signals:
+        - signal: route/NAVIGATE_TO_ASSIGNMENT
+          collection: usio/pay.transaction
+          viewtype: detail
+          recordid: ${uesio/core.id}
+title: Transaction Tile Component
+discoverable: true
+description: A transaction tile
+sections:
+  - type: HOME
+    properties:
+  - type: DISPLAY

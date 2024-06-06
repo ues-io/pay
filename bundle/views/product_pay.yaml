@@ -27,7 +27,20 @@ definition:
           - usio/pay.pay_screen:
               amount: ${price}
               secondaryAmount: 1.99
-              description: ${description}
+              description: ${name}
+              onSubmitSignals:
+                - signal: bot/CALL
+                  bot: usio/pay.buy_product
+                  stepId: "submit_token"
+                  params:
+                    token: "$Text{$SignalOutput{[checkout][token]}}"
+                    firstName: "$Text{$SignalOutput{[checkout][firstName]}}"
+                    lastName: "$Text{$SignalOutput{[checkout][lastName]}}"
+                    address: "$Text{$SignalOutput{[checkout][address]}}"
+                    city: "$Text{$SignalOutput{[checkout][city]}}"
+                    state: "$Text{$SignalOutput{[checkout][state]}}"
+                    zip: "$Text{$SignalOutput{[checkout][zip]}}"
+                    product: ${uesio/core.id}
               main:
                 - uesio/io.box:
                     uesio.styleTokens:
@@ -60,12 +73,11 @@ definition:
                                   - uesio/io.text:
                                       uesio.styleTokens:
                                         root:
-                                          - text-5xl
-                                          - text-indigo-700
+                                          - text-3xl
+                                          - text-indigo-500
                                           - font-bold
                                       text: $Currency{price}
   params:
     slug:
       type: TEXT
       required: true
-      collection: usio/core.product

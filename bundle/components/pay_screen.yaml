@@ -42,6 +42,7 @@ definition:
                   amount: $Prop{amount}
                   secondaryAmount: $Prop{secondaryAmount}
                   description: $Prop{description}
+                  onSubmitSignals: $Prop{onSubmitSignals}
 title: Payment Screen
 discoverable: true
 description: A payment screen layout

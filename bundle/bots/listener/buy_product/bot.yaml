@@ -1,0 +1,4 @@
+name: buy_product
+public: true
+type: LISTENER
+dialect: TYPESCRIPT

@@ -1,0 +1,8 @@
+name: avatariconoutline
+label: Avatar Icon Outline
+public: true
+extends: usio/pay.avataricon
+definition:
+  uesio.styleTokens:
+    root:
+      - "[font-variation-settings:'FILL'_0]"

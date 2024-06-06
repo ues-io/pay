@@ -28,8 +28,17 @@ definition:
       collection: usio/pay.order
       fields:
         usio/pay.product:
+          fields:
+            usio/pay.name:
+            usio/pay.description:
+            usio/pay.initials:
+            usio/pay.image:
         usio/pay.transaction:
+          fields:
+            usio/pay.firstname:
+            usio/pay.lastname:
         usio/pay.amount:
+        uesio/core.createdat:
       order:
         - field: uesio/core.createdat
           desc: true
@@ -41,6 +50,17 @@ definition:
         usio/pay.price:
         usio/pay.image:
         usio/pay.initials:
+      order:
+        - field: uesio/core.createdat
+          desc: true
+    newtransactions:
+      collection: usio/pay.transaction
+      fields:
+        usio/pay.firstname:
+        usio/pay.lastname:
+        usio/pay.amount:
+        usio/pay.description:
+        uesio/core.createdat:
       order:
         - field: uesio/core.createdat
           desc: true
@@ -76,12 +96,35 @@ definition:
                                   - uesio/io.titlebar:
                                       title: Revenue
                                       uesio.variant: usio/pay.sub
+                                  - uesio/io.linechart:
+                                      uesio.variant: usio/pay.main
+                                      series:
+                                        - name: revenue
+                                          label: Order Revenue
+                                          valueField: usio/pay.amount_sum
+                                          categoryField: uesio/core.createdat_date_trunc_month
+                                          wire: revenue
+                                      labels:
+                                        source: DATA
+                                        timeunit: MONTH
                             - uesio/io.box:
                                 uesio.variant: usio/pay.dashboarditem
                                 components:
                                   - uesio/io.titlebar:
                                       title: Orders This Week
                                       uesio.variant: usio/pay.sub
+                                  - uesio/io.barchart:
+                                      uesio.variant: usio/pay.main
+                                      series:
+                                        - name: orders
+                                          label: New Orders
+                                          valueField: uesio/core.id_count
+                                          categoryField: uesio/core.createdat_date_trunc_day
+                                          wire: ordercount
+                                      labels:
+                                        source: DATA
+                                        timeunit: DAY
+                                        timeunitfill: WEEK
                       - uesio/io.grid:
                           uesio.variant: usio/pay.three_columns
                           uesio.styleTokens:
@@ -97,6 +140,14 @@ definition:
                                   - uesio/io.box:
                                       uesio.variant: usio/pay.dashboardpanel
                                       components:
+                                        - uesio/io.deck:
+                                            wire: neworders
+                                            mode: READ
+                                            id: neworders
+                                            uesio.variant: usio/pay.tiles
+                                            components:
+                                              - usio/pay.order_tile:
+                                                  showAmountInfo: true
                             - uesio/io.box:
                                 uesio.variant: usio/pay.dashboarditem
                                 components:
@@ -122,3 +173,11 @@ definition:
                                   - uesio/io.box:
                                       uesio.variant: usio/pay.dashboardpanel
                                       components:
+                                        - uesio/io.deck:
+                                            wire: newtransactions
+                                            mode: READ
+                                            id: newtransactions
+                                            uesio.variant: usio/pay.tiles
+                                            components:
+                                              - usio/pay.transaction_tile:
+                                                  showAmountInfo: true
