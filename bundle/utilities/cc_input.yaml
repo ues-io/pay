@@ -1,3 +1,4 @@
 name: cc_input
+public: true
 pack: main
 entrypoint: utilities/cc_input/cc_input

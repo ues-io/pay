@@ -1,4 +1,5 @@
 name: pay_screen
+public: true
 category: LAYOUT
 type: DECLARATIVE
 slots:

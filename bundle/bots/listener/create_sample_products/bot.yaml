@@ -1,4 +1,0 @@
-name: create_sample_products
-public: true
-type: LISTENER
-dialect: TYPESCRIPT

@@ -1,5 +1,0 @@
-name: transaction
-label: Transaction
-type: REFERENCE
-reference:
-  collection: transaction

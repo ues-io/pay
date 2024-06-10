@@ -1,5 +1,6 @@
 name: checkout_credit_card
 category: DATA
+public: true
 pack: main
 entrypoint: components/checkout_credit_card/checkout_credit_card
 variants:

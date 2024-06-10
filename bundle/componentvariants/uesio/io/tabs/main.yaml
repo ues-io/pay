@@ -1,8 +1,0 @@
-name: main
-label: Main
-definition:
-  labelsVariant: usio/pay.main
-  panelVariant: usio/pay.tabpanel
-variants:
-  - uesio/io.tablabels:usio/pay.main
-  - uesio/io.scrollpanel:usio/pay.tabpanel

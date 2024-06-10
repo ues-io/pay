@@ -1,7 +1,0 @@
-name: tiles
-label: Tiles
-public: true
-definition:
-  gridVariant: usio/pay.tiles
-variants:
-  - uesio/io.grid:usio/pay.tiles

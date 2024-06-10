@@ -1,5 +1,6 @@
 name: confirmation
 label: Confirmation ID
+public: true
 type: TEXT
 createOnly: true
 required: true

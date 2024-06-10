@@ -1,3 +1,4 @@
 name: usio
 type: usio
+public: true
 credentials: usio

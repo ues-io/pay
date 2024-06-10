@@ -1,3 +1,4 @@
 name: checkout_button
+public: true
 pack: main
 entrypoint: utilities/checkout_button/checkout_button

@@ -1,5 +1,0 @@
-name: userlist
-path: user
-view: user_list
-theme: uesio/core.default
-title: User List View

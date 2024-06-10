@@ -1,6 +1,0 @@
-name: section
-label: Section
-extends: uesio/io.section
-definition:
-  uesio.styleTokens:
-    root:

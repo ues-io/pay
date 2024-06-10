@@ -1,8 +1,0 @@
-name: dashboardpanel
-label: Dashboard Panel
-public: true
-definition:
-  uesio.styleTokens:
-    root:
-      - lg:overflow-auto
-      - lg:h-full

@@ -1,5 +1,0 @@
-name: price
-label: Price
-type: NUMBER
-number:
-  decimals: 2

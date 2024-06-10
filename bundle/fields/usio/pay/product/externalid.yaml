@@ -1,6 +1,0 @@
-name: externalid
-label: External Id
-type: AUTONUMBER
-autonumber:
-  prefix: PRODUCT
-  leadingZeros: 4

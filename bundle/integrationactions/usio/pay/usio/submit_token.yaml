@@ -1,5 +1,6 @@
 name: submit_token
 label: Submit Token
+public: true
 params:
   - name: token
     type: TEXT

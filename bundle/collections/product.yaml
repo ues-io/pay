@@ -1,7 +1,0 @@
-name: product
-label: Product
-public: true
-pluralLabel: Products
-uniqueKey:
-  - externalid
-nameField: name

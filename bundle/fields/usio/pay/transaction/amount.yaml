@@ -1,5 +1,6 @@
 name: amount
 label: Amount
+public: true
 type: NUMBER
 createOnly: true
 required: true

@@ -1,4 +1,5 @@
 name: description
 label: Description
+public: true
 type: LONGTEXT
 createOnly: true

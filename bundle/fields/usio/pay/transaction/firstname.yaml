@@ -1,5 +1,6 @@
 name: firstname
 label: First Name
 type: TEXT
+public: true
 createOnly: true
 required: true
