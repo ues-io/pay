@@ -1,6 +1,6 @@
 name: lastname
 label: Last Name
-type: TEXT
 public: true
+type: TEXT
 createOnly: true
 required: true

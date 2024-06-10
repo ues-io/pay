@@ -1,7 +1,7 @@
 name: secondary_amount
 label: Secondary Amount
-type: NUMBER
 public: true
+type: NUMBER
 createOnly: true
 required: true
 number:
